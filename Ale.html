@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Para Mi 🩹 💙🩵</title>
+<style>
+  /* ================================================================
+     💙 ESTILO CORAZONES AZULES - Modo Aprendiz
+     Paleta: Negro, azul eléctrico (#0077ff), azul cielo (#00bbff)
+     ================================================================ */
+
+  /* 🔹 RESET: Elimina márgenes y estilos por defecto */
+  * { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Segoe UI', 'Georgia', serif; 
+    -webkit-tap-highlight-color: transparent; 
+  }
+
+  /* 🔹 FONDO CON ESTAMPADO DE CORAZONES AZULES */
+  body { 
+    background: #0a0a0f; 
+    min-height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 12px; 
+    overflow-x: hidden; 
+    /* 🔹 ESTAMPADO DE CORAZONES AZULES */
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(0, 119, 255, 0.08) 0%, transparent 4%),
+      radial-gradient(circle at 60% 70%, rgba(0, 187, 255, 0.06) 0%, transparent 4%),
+      radial-gradient(circle at 80% 20%, rgba(0, 119, 255, 0.07) 0%, transparent 4%),
+      radial-gradient(circle at 40% 90%, rgba(0, 187, 255, 0.05) 0%, transparent 4%),
+      radial-gradient(circle at 10% 60%, rgba(0, 119, 255, 0.06) 0%, transparent 4%),
+      radial-gradient(circle at 90% 80%, rgba(0, 187, 255, 0.07) 0%, transparent 4%);
+    background-size: 120px 120px, 150px 150px, 100px 100px, 180px 180px, 130px 130px, 160px 160px;
+    background-color: #0a0a0f;
+  }
+
+  /* 🔹 ESTAMPADO DE CORAZONES CON EMOJIS (capa extra) */
+  body::before {
+    content: "🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
+    letter-spacing: 40px;
+    word-spacing: 60px;
+    line-height: 60px;
+    color: rgba(0, 119, 255, 0.04);
+    pointer-events: none;
+    z-index: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    overflow: hidden;
+  }
+
+  /* ================================================================
+     💙 PORTADA DE BIENVENIDA
+     ================================================================ */
+
+  .portada {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: radial-gradient(circle at 30% 40%, #0a0a2e 0%, #0a0a0f 60%, #05050a 100%);
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    z-index: 1000; 
+    text-align: center; 
+    padding: 20px; 
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .portada.oculta { 
+    opacity: 0; 
+    transform: scale(1.1); 
+    pointer-events: none; 
+  }
+
+  /* ================================================================
+     💙 MARCO DE LA FOTO (Con efecto de brillo azul)
+     ================================================================ */
+
+  .marco-foto {
+    width: 180px; 
+    height: 180px; 
+    border-radius: 50%; 
+    border: 4px solid #0077ff;
+    box-shadow: 0 0 30px rgba(0, 119, 255, 0.6), 0 0 60px rgba(0, 119, 255, 0.3), 0 0 90px rgba(0, 187, 255, 0.2);
+    margin-bottom: 20px; 
+    position: relative; 
+    animation: flotar 3s ease-in-out infinite; 
+    flex-shrink: 0;
+    background: #0a0a2e; 
+    padding: 4px;
+  }
+
+  /* 🔹 BRILLO GIRATORIO AZUL */
+  .marco-foto::before {
+    content: ''; 
+    position: absolute; 
+    inset: -4px; 
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #0077ff, #00bbff, #0044aa, #0077ff);
+    z-index: -1; 
+    animation: girarBrillo 4s linear infinite; 
+  }
+
+  @keyframes girarBrillo { 
+    100% { transform: rotate(360deg); } 
+  }
+
+  .foto-fondo {
+    width: 100%; 
+    height: 100%; 
+    border-radius: 25%;
+    background-image: url('https://raw.githubusercontent.com/maikermedina1999-bot/Proyecto/1e8cdc29d97d524774122364e7868e838c97165b/amo.jpg');
+    background-size: cover; 
+    background-position: 40% center;
+    background-repeat: no-repeat;
+  }
+
+  /* 🔹 CORAZÓN BADGE AZUL */
+  .corazon-badge { 
+    position: absolute; 
+    bottom: 5px; 
+    right: 5px; 
+    font-size: 32px; 
+    animation: latido 1.2s infinite; 
+    z-index: 10; 
+    color: #00bbff;
+  }
+
+  @keyframes flotar { 
+    0%, 100% { transform: translateY(0); } 
+    50% { transform: translateY(-10px); } 
+  }
+
+  @keyframes latido { 
+    0%, 100% { transform: scale(1); } 
+    50% { transform: scale(1.2); } 
+  }
+
+  /* ================================================================
+     💙 TEXTOS DE LA PORTADA
+     ================================================================ */
+
+  .portada-titulo { 
+    color: #88ddff;
+    font-size: 1.8rem; 
+    font-weight: 800; 
+    margin-bottom: 6px; 
+    text-shadow: 0 0 20px rgba(0, 119, 255, 0.5); 
+    letter-spacing: 1px;
+  }
+
+  .portada-subtitulo { 
+    color: #66aacc; 
+    font-size: 1rem; 
+    font-weight: 500; 
+    margin-bottom: 30px; 
+    max-width: 280px; 
+    line-height: 1.4; 
+    font-style: italic;
+  }
+
+  /* ================================================================
+     💙 BOTÓN DE ENTRADA (Azul con brillo)
+     ================================================================ */
+
+  .btn-entrar {
+    background: linear-gradient(90deg, #0044aa, #0077ff);
+    color: #ddeeff; 
+    border: 1px solid #0077ff; 
+    padding: 16px 36px; 
+    border-radius: 30px;
+    font-size: 1.1rem; 
+    font-weight: 700; 
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0, 119, 255, 0.5); 
+    transition: all 0.2s ease;
+    position: relative; 
+    overflow: hidden;
+    letter-spacing: 2px;
+  }
+
+  .btn-entrar::after {
+    content: ''; 
+    position: absolute; 
+    top: -50%; 
+    left: -50%; 
+    width: 200%; 
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 187, 255, 0.3) 0%, transparent 60%);
+    animation: brilloBoton 3s infinite; 
+  }
+
+  @keyframes brilloBoton { 
+    0% { transform: translateX(-100%) rotate(45deg); } 
+    100% { transform: translateX(100%) rotate(45deg); } 
+  }
+
+  .btn-entrar:active { 
+    transform: scale(0.95); 
+  }
+
+  /* ================================================================
+     💙 CORAZONES FLOTANTES DE FONDO (Azul)
+     ================================================================ */
+
+  .corazon-fondo { 
+    position: absolute; 
+    color: rgba(0, 119, 255, 0.15); 
+    font-size: 20px; 
+    animation: subir 6s linear infinite; 
+    bottom: -30px; 
+  }
+
+  @keyframes subir { 
+    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.6; } 
+    100% { transform: translateY(-100vh) rotate(360deg) scale(0.3); opacity: 0; } 
+  }
+
+  /* ================================================================
+     💙 CONTENEDOR PRINCIPAL
+     ================================================================ */
+
+  .contenedor {
+    width: 100%; 
+    max-width: 420px; 
+    background: linear-gradient(145deg, #0a0a2e, #0a0a0f);
+    border-radius: 32px; 
+    padding: 24px 16px;
+    border: 1px solid rgba(0, 119, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8), 0 0 30px rgba(0, 119, 255, 0.1); 
+    display: none; 
+    flex-direction: column; 
+    gap: 16px;
+    text-align: center; 
+    color: #ddeeff; 
+    max-height: 90vh; 
+    overflow-y: auto; 
+  }
+
+  .header-app h2 { 
+    color: #00bbff;
+    font-size: 1.3rem; 
+    margin-bottom: 4px; 
+    text-shadow: 0 0 15px rgba(0, 187, 255, 0.3);
+    letter-spacing: 1px;
+  }
+
+  .header-app p { 
+    color: #66aacc; 
+    font-size: 0.85rem; 
+    opacity: 0.8; 
+    font-style: italic;
+  }
+
+  /* ================================================================
+     💙 GRID DE BOTONES CIRCULARES
+     ================================================================ */
+
+  .grid-circulos {
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 18px 12px; 
+    justify-items: center; 
+    margin-top: 10px;
+  }
+
+  .item-boton { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 6px; 
+  }
+
+  /* 🔹 BOTÓN CIRCULAR AZUL */
+  .btn-circular {
+    width: 75px; 
+    height: 75px; 
+    border-radius: 50%; 
+    border: 2px solid #0077ff;
+    background: linear-gradient(145deg, #0a0a2e, #1a1a4e);
+    color: #88ddff; 
+    font-size: 1.8rem; 
+    cursor: pointer;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    box-shadow: 0 8px 0 #050520, 0 12px 20px rgba(0, 0, 0, 0.7);
+    transition: all 0.1s ease; 
+    outline: none;
+    position: relative; 
+    overflow: hidden;
+  }
+
+  /* 🔹 BRILLO SUPERIOR EN BOTÓN */
+  .btn-circular::after {
+    content: ''; 
+    position: absolute; 
+    inset: 0; 
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(0, 187, 255, 0.2), transparent 70%);
+    pointer-events: none; 
+  }
+
+  .btn-circular:active { 
+    transform: translateY(6px); 
+    box-shadow: 0 2px 0 #050520, 0 4px 8px rgba(0, 0, 0, 0.5); 
+  }
+
+  .etiqueta-boton { 
+    color: #66aacc; 
+    font-size: 0.75rem; 
+    font-weight: 600; 
+    max-width: 110px; 
+    text-align: center; 
+  }
+
+  /* ================================================================
+     💙 TARJETA DE MENSAJE
+     ================================================================ */
+
+  .tarjeta-mensaje {
+    background: linear-gradient(145deg, #0a0a2e, #0a0a0f);
+    border: 1px solid #0077ff; 
+    border-radius: 20px;
+    padding: 20px; 
+    margin-top: 10px; 
+    display: none; 
+    flex-direction: column; 
+    gap: 14px;
+    animation: fadeIn 0.4s ease; 
+    box-shadow: 0 0 30px rgba(0, 119, 255, 0.2);
+  }
+
+  @keyframes fadeIn { 
+    from { opacity: 0; transform: translateY(15px) scale(0.95); } 
+    to { opacity: 1; transform: translateY(0) scale(1); } 
+  }
+
+  .texto-mensaje { 
+    color: #88ddff; 
+    font-size: 1rem; 
+    line-height: 1.6; 
+    font-style: italic; 
+  }
+
+  .texto-mensaje .emoji-grande { 
+    font-size: 2.5rem; 
+    display: block; 
+    margin-bottom: 8px; 
+  }
+
+  .btn-volver {
+    background: #0a0a2e; 
+    color: #88ddff; 
+    border: 1px solid #0077ff; 
+    border-radius: 12px;
+    padding: 10px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    margin-top: 10px;
+    transition: all 0.2s ease;
+  }
+
+  .btn-volver:active { 
+    transform: scale(0.95); 
+  }
+
+  /* ================================================================
+     💙 BOTÓN DE MÚSICA (Azul flotante)
+     ================================================================ */
+
+  .btn-musica {
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px;
+    background: rgba(10, 10, 46, 0.8); 
+    backdrop-filter: blur(10px); 
+    border: 1px solid #0077ff;
+    border-radius: 50%; 
+    width: 50px; 
+    height: 50px;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    font-size: 1.5rem; 
+    cursor: pointer; 
+    z-index: 500;
+    box-shadow: 0 4px 15px rgba(0, 119, 255, 0.3);
+    transition: all 0.3s ease; 
+    color: #88ddff;
+  }
+
+  .btn-musica.activo { 
+    background: rgba(0, 119, 255, 0.3); 
+    border-color: #00bbff;
+    animation: pulsoMusica 1.5s infinite; 
+  }
+
+  @keyframes pulsoMusica { 
+    0%, 100% { box-shadow: 0 0 10px rgba(0, 119, 255, 0.3); } 
+    50% { box-shadow: 0 0 30px rgba(0, 187, 255, 0.5); } 
+  }
+
+  .btn-musica:active { 
+    transform: scale(0.9); 
+  }
+
+  /* ================================================================
+     💙 CONTADOR Y FRASES
+     ================================================================ */
+
+  .contador-tiempo {
+    background: rgba(10, 10, 46, 0.5); 
+    border: 1px solid rgba(0, 119, 255, 0.3);
+    border-radius: 12px; 
+    padding: 10px; 
+    margin-bottom: 4px;
+    font-size: 0.75rem; 
+    color: #66aacc;
+  }
+
+  .contador-tiempo span { 
+    font-weight: 700; 
+    color: #00bbff; 
+  }
+
+  .frase-aleatoria {
+    font-size: 0.8rem; 
+    color: #66aacc; 
+    font-style: italic; 
+    padding: 8px 16px;
+    background: rgba(10, 10, 46, 0.4); 
+    border-radius: 20px;
+    border-left: 3px solid #00bbff;
+    min-height: 40px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+  }
+
+  /* ================================================================
+     💙 SCROLL
+     ================================================================ */
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #0a0a0f; }
+  ::-webkit-scrollbar-thumb { background: #0077ff; border-radius: 4px; }
+
+  /* ================================================================
+     💙 ESTAMPADO ADICIONAL DE CORAZONES (con CSS puro)
+     ================================================================ */
+  .estampado-corazones {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .estampado-corazones span {
+    position: absolute;
+    color: rgba(0, 119, 255, 0.04);
+    font-size: 25px;
+    animation: flotarCorazon 15s linear infinite;
+  }
+
+  @keyframes flotarCorazon {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+  💙 ESTAMPADO DE CORAZONES AZULES (fondo)
+  ================================================================ -->
+<div class="estampado-corazones" id="estampadoCorazones"></div>
+
+<!-- ================================================================
+  💙 PORTADA DE BIENVENIDA
+  ================================================================ -->
+<div class="portada" id="portada">
+  <div id="corazonesContenedor"></div>
+  
+  <div class="marco-foto">
+    <div class="foto-fondo" id="fotoAmor"></div>
+    <div class="corazon-badge">💙</div>
+  </div>
+
+  <div class="portada-titulo">acompañame esta noche😈</div>
+  <div class="portada-subtitulo">Diseñé este3spaci sacarte una sonrisa, en tus peores dias .</div>
+
+  <button class="btn-entrar" id="btnEntrar">▶ Entrar al mundo azul</button>
+</div>
+
+<!-- ================================================================
+  💙 APP PRINCIPAL
+  ================================================================ -->
+<div class="contenedor" id="app">
+  
+  <div class="header-app">
+    <h2>💙 Panel de Sorpresas Azules 💙</h2>
+    <p>Picale a cualquiera de los 10 botones, mi amor:</p>
+  </div>
+
+  <!-- ⏱️ CONTADOR DE TIEMPO JUNTOS -->
+  <div class="contador-tiempo" id="contadorTiempo">
+    💙 <span id="diasContador">0</span> días, 
+    <span id="horasContador">0</span> horas, 
+    <span id="minutosContador">0</span> minutos juntos en el cielo azul 🩵
+  </div>
+
+  <!-- 💬 FRASE ALEATORIA -->
+  <div class="frase-aleatoria" id="fraseAleatoria">💭 Cargando frase pa' ti, mi vida...</div>
+
+  <!-- 🔘 GRID DE 10 BOTONES CIRCULARES -->
+  <div class="grid-circulos" id="listaBotones">
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(1)">💙</button>
+      <span class="etiqueta-boton">Razón de amor</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(2)">☕</button>
+      <span class="etiqueta-boton">Recuerdo</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(3)">👑</button>
+      <span class="etiqueta-boton">Lo que amo de ti</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(4)">🎵</button>
+      <span class="etiqueta-boton">Canción</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(5)">🫂</button>
+      <span class="etiqueta-boton">Abrazo</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(6)">🌊</button>
+      <span class="etiqueta-boton">Deseo juntos</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(7)">🤫</button>
+      <span class="etiqueta-boton">Secreto</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(8)">🩵</button>
+      <span class="etiqueta-boton">Promesa</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(9)">🎬</button>
+      <span class="etiqueta-boton">Cita ideal</span>
+    </div>
+    <div class="item-boton">
+      <button class="btn-circular" onclick="mostrarDetalle(10)">❤️</button>
+      <span class="etiqueta-boton">Mensaje final</span>
+    </div>
+  </div>
+
+  <!-- 🃏 TARJETA QUE MUESTRA EL MENSAJE -->
+  <div class="tarjeta-mensaje" id="vistaMensaje">
+    <div class="texto-mensaje" id="contenidoTexto">
+      <span class="emoji-grande">💙</span>
+    </div>
+    <button class="btn-volver" onclick="cerrarDetalle()">↩va a ser mia para siempre vueve a los botones</button>
+  </div>
+</div>
+
+<!-- ================================================================
+  💙 BOTÓN DE MÚSICA FLOTANTE
+  ================================================================ -->
+<button class="btn-musica" id="btnMusica" onclick="toggleMusica()">🔇</button>
+
+<!-- ================================================================
+  💙 REPRODUCTOR DE MÚSICA OCULTO (YouTube)
+  ================================================================ -->
+<div id="audioContainer" style="display:none;">
+  <iframe id="audioIframe" 
+    src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=0&loop=1&playlist=tgbNymZ7vqY" 
+    allow="autoplay; encrypted-media" style="display:none;">
+  </iframe>
+</div>
+
+<!-- ================================================================
+  💙 JAVASCRIPT - TODA LA LÓGICA
+  ================================================================ -->
+<script>
+// ================================================================
+// 📚 MODO APRENDIZ - Código explicado con cariño
+// ================================================================
+
+// ================================================================
+// 1. 📝 MENSAJES CON JERGA VENEZOLANA (Versión Azul)
+// ================================================================
+const mensajes = {
+  1: "💙 Amo la forma tan única en la que sonríes,Cómo logras alegrar mi día con solo hablarme. te amo carajita",
+  2: "☕ das miedo chama 👉🏽👌🏽
+  3: "👑Tu ternura, esa mirada hermosa siempre. pero aveces me provoca es date duro en la boca. 🥰",
+  4: "🎵 erez mi pedacito liz en la oscuridad .🥺 ",
+  5: "🫂 ¡Te mando un abrazo gigantesco! Imagíname apretándote bien fuerte contra mi. ",
+  6: "🌊 acuerdate que me debes un paeo pa la playa 🌟",
+  7: "🤫 Desde el primer momento en que te vi, supe que te convertirías en alguien súper importante en mi vida. ",
+  8: "🩵 Te prometo estar siempre a tu lado, apoyándote en tus sueños y sacándote sonrisas cada día. Así sea, mi amor🩵. 🌹",
+  9: "🎬 Nuestra próxima cita incluirá tu comida favorita, una película romántica y muchos mimos. ¡Va a ser una vaina chévere! 🍿",
+  10: "❤️ No importa la hora ni el lugar, siempre serás mi persona favorita en todo el universo.♾️"
+};
+
+// ================================================================
+// 2. 💬 FRASES ALEATORIAS (Con jerga venezolana)
+// ================================================================
+const frases = [
+  "💭 Eres la mejor parte de mis días, mi vida.",
+  "💙 Cada día te quiero más.",
+  "🩵 Tu sonrisa ilumina mi dia.",
+  "💙 Eres mi persona favorita en el universo.",
+  "❤️ Contigo todo tiene mas paz.",
+  "🌊 Eres mi sueño hecho realidad.",
+"💫 eres un sueño del que nunca quiero despertar. te a pasado?.",
+  "💙 Eres mi lugar seguro en esta mrd llamada vida.",
+  "🩵 Tu amor amor en la distancia tambien duele no te crea carajita.",
+  "💙 Siempre voy a elegirte a ti como tu a mi."
+];
+
+// ================================================================
+// 3. 💕 CORAZONES FLOTANTES (Color azul)
+// ================================================================
+const contenedorCorazones = document.getElementById('corazonesContenedor');
+
+for (let i = 0; i < 20; i++) {
+  const corazon = document.createElement('div');
+  corazon.classList.add('corazon-fondo');
+  const emojis = ['💙', '🩵', '💎', '🌊', '💧', '❄️'];
+  corazon.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+  corazon.style.left = Math.random() * 100 + 'vw';
+  corazon.style.animationDuration = (Math.random() * 4 + 3) + 's';
+  corazon.style.animationDelay = Math.random() * 3 + 's';
+  corazon.style.fontSize = (Math.random() * 18 + 12) + 'px';
+  contenedorCorazones.appendChild(corazon);
+}
+
+// ================================================================
+// 4. 📸 FALLOBACK DE IMAGEN
+// ================================================================
+const imgPrueba = new Image();
+imgPrueba.src = 'https://raw.githubusercontent.com/maikermedina1999-bot/Proyecto/1e8cdc29d97d524774122364e7868e838c97165b/amo.jpg';
+imgPrueba.onerror = function() {
+  document.getElementById('fotoAmor').style.backgroundImage = 
+    "url('https://raw.githubusercontent.com/maikermedina1999-bot/Proyecto/1e8cdc29d97d524774122364e7868e838c97165b/amo.png')";
+};
+
+// ================================================================
+// 5. 🚪 ABRIR APP (CORREGIDO - ¡AHORA SÍ FUNCIONA!)
+// ================================================================
+document.addEventListener('DOMContentLoaded', function() {
+  // 🔹 Asegurarnos de que el botón existe antes de asignarle el evento
+  const btnEntrar = document.getElementById('btnEntrar');
+  const portada = document.getElementById('portada');
+  const app = document.getElementById('app');
+
+  if (btnEntrar) {
+    btnEntrar.addEventListener('click', function(e) {
+      e.preventDefault(); // 🔹 Evita comportamientos extraños
+      
+      // 🔹 Agregar la clase oculta para desvanecer la portada
+      portada.classList.add('oculta');
+      
+      // 🔹 Esperar 800ms y mostrar la app
+      setTimeout(function() {
+        portada.style.display = 'none';
+        app.style.display = 'flex';
+        
+        // 🔹 Iniciar funciones
+        iniciarContador();
+        cambiarFrase();
+        setInterval(cambiarFrase, 8000);
+      }, 800);
+    });
+  } else {
+    console.error('❌ No se encontró el botón #btnEntrar');
+  }
+});
+
+// ================================================================
+// 6. 🎮 FUNCIONES DE LOS BOTONES
+// ================================================================
+function mostrarDetalle(numero) {
+  document.getElementById('listaBotones').style.display = 'none';
+  const texto = mensajes[numero];
+  const emoji = texto.match(/^.{1,2}/)?.[0] || '💙';
+  document.getElementById('contenidoTexto').innerHTML = 
+    `<span class="emoji-grande">${emoji}</span>${texto}`;
+  document.getElementById('vistaMensaje').style.display = 'flex';
+}
+
+function cerrarDetalle() {
+  document.getElementById('vistaMensaje').style.display = 'none';
+  document.getElementById('listaBotones').style.display = 'grid';
+}
+
+// ================================================================
+// 7. ⏱️ CONTADOR DE TIEMPO JUNTOS
+// ================================================================
+function iniciarContador() {
+  // 🔹 ¡CAMBIA ESTA FECHA! (Año, Mes-1, Día, Hora, Minuto, Segundo)
+  //    Ejemplo: 14 de febrero de 2024 a las 00:00:00
+  const fechaInicio = new Date(2024, 1, 14, 0, 0, 0); // <-- MODIFICA AQUÍ
+  
+  const ahora = new Date();
+  const diff = Math.floor((ahora - fechaInicio) / 1000);
+  const dias = Math.floor(diff / 86400);
+  const horas = Math.floor((diff % 86400) / 3600);
+  const minutos = Math.floor((diff % 3600) / 60);
+  
+  document.getElementById('diasContador').textContent = dias;
+  document.getElementById('horasContador').textContent = horas;
+  document.getElementById('minutosContador').textContent = minutos;
+}
+
+// ================================================================
+// 8. 💬 FRASE ALEATORIA
+// ================================================================
+function cambiarFrase() {
+  const idx = Math.floor(Math.random() * frases.length);
+  document.getElementById('fraseAleatoria').textContent = frases[idx];
+}
+
+// ================================================================
+// 9. 🎵 MÚSICA
+// ================================================================
+let musicaActiva = false;
+const btnMusica = document.getElementById('btnMusica');
+const audioIframe = document.getElementById('audioIframe');
+
+function toggleMusica() {
+  musicaActiva = !musicaActiva;
+  if (musicaActiva) {
+    btnMusica.textContent = '🔊';
+    btnMusica.classList.add('activo');
+    audioIframe.src = 'https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&loop=1&playlist=tgbNymZ7vqY';
+  } else {
+    btnMusica.textContent = '🔇';
+    btnMusica.classList.remove('activo');
+    audioIframe.src = 'https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=0';
+  }
+}
+
+// ================================================================
+// 10. 💕 CORAZONES AL PRESIONAR BOTONES
+// ================================================================
+document.querySelectorAll('.btn-circular').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const corazon = document.createElement('div');
+    corazon.textContent = '💙';
+    corazon.style.cssText = `
+      position: fixed; 
+      left: ${e.clientX - 15}px; 
+      top: ${e.clientY - 15}px;
+      font-size: 30px; 
+      pointer-events: none;
+      z-index: 999;
+      animation: subir 2s ease-out forwards;
+    `;
+    document.body.appendChild(corazon);
+    setTimeout(() => corazon.remove(), 2500);
+  });
+});
+
+// ================================================================
+// 11. 💙 ESTAMPADO DE CORAZONES AZULES (Fondo)
+// ================================================================
+function crearEstampadoCorazones() {
+  const contenedor = document.getElementById('estampadoCorazones');
+  const emojis = ['🩵', '💙', '💎', '🌊'];
+  
+  for (let i = 0; i < 25; i++) {
+    const span = document.createElement('span');
+    span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    span.style.left = Math.random() * 100 + '%';
+    span.style.fontSize = (Math.random() * 20 + 15) + 'px';
+    span.style.animationDelay = (Math.random() * 15) + 's';
+    span.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    contenedor.appendChild(span);
+  }
+}
+
+// ================================================================
+// 12. 📢 MENSAJE EN CONSOLA
+// ================================================================
+console.log('💙 Para mi persona favorita ❤️');
+console.log('📚 Modo Aprendiz - Código explicado paso a paso');
+console.log('🇻🇪 Con jerga venezolana pa\' que se sienta como en casa');
+console.log('🩵 Estilo corazones azules activado');
+
+// ================================================================
+// 13. INICIALIZAR ESTAMPADO
+// ================================================================
+crearEstampadoCorazones();
+</script>
+</body>
+</html>
