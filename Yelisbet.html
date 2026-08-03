@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🎮 Arcade - Esquiva en la Calle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #0a0a1a;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 800px;
+            height: 100vh;
+            max-height: 600px;
+            background: #1a1a2e;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #menuPrincipal {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #16213e, #0a0a1a);
+            padding: 30px 20px;
+            gap: 20px;
+            text-align: center;
+        }
+
+        #menuPrincipal h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: #00d4ff;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            letter-spacing: 2px;
+        }
+
+        #menuPrincipal p {
+            color: #8899aa;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .menu-botones {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .btn-menu {
+            background: linear-gradient(145deg, #1a2a4a, #0d1b3e);
+            border: 1px solid #2a4a6a;
+            color: #cceeff;
+            padding: 16px 24px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .btn-menu:hover {
+            transform: translateY(-2px);
+            border-color: #00d4ff;
+            box-shadow: 0 6px 25px rgba(0, 212, 255, 0.2);
+        }
+
+        .btn-menu:active {
+            transform: scale(0.95);
+        }
+
+        .btn-menu.bloqueado {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+            border-color: #2a3a4a;
+            box-shadow: none !important;
+        }
+
+        .btn-menu .badge {
+            display: inline-block;
+            background: #00d4ff;
+            color: #0a0a1a;
+            font-size: 0.6rem;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: 8px;
+            font-weight: 800;
+        }
+
+        #areaJuego {
+            flex: 1;
+            display: none;
+            position: relative;
+            background: #1a1a2e;
+            overflow: hidden;
+        }
+
+        #areaJuego.activo {
+            display: block;
+        }
+
+        #canvasJuego {
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #87CEEB;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        .btn-volver {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-volver:hover {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: #00d4ff;
+        }
+
+        .btn-volver:active {
+            transform: scale(0.95);
+        }
+
+        .puntuacion {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .puntuacion span {
+            color: #00d4ff;
+        }
+
+        #gameOver {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(6px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            text-align: center;
+            padding: 30px;
+            gap: 16px;
+        }
+
+        #gameOver.visible {
+            display: flex;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #gameOver h2 {
+            color: #ff4757;
+            font-size: 2.8rem;
+            font-weight: 900;
+            text-shadow: 0 0 40px rgba(255, 71, 87, 0.3);
+        }
+
+        #gameOver .puntaje-final {
+            color: #fff;
+            font-size: 1.4rem;
+        }
+
+        #gameOver .puntaje-final span {
+            color: #00d4ff;
+            font-size: 2rem;
+        }
+
+        .btn-reiniciar {
+            background: linear-gradient(145deg, #00d4ff, #0088cc);
+            border: none;
+            color: #0a0a1a;
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 25px rgba(0, 212, 255, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-reiniciar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 35px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-reiniciar:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 600px) {
+            #app { max-height: 100vh; border-radius: 0; max-width: 100%; }
+            #menuPrincipal h1 { font-size: 2rem; }
+            .btn-menu { padding: 14px 18px; font-size: 1rem; }
+            #gameOver h2 { font-size: 2rem; }
+        }
+
+        @media (max-height: 500px) {
+            #app { max-height: 100vh; }
+            #menuPrincipal h1 { font-size: 1.6rem; }
+            .menu-botones { gap: 8px; }
+            .btn-menu { padding: 10px 16px; font-size: 0.9rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+
+        <!-- MENÚ PRINCIPAL -->
+        <div id="menuPrincipal">
+            <h1>🎮 Arcade</h1>
+            <p>Selecciona un minijuego para empezar</p>
+            <div class="menu-botones">
+                <button class="btn-menu" id="btnJuego1">
+                    🏃 Corre sofia corre
+                    <span class="badge">ACTIVO</span>
+                </button>
+                <button class="btn-menu bloqueado" onclick="alert('Próximamente disponible')">
+                    🧩 Minijuego 2 <span class="badge">PROX</span>
+                </button>
+                <button class="btn-menu bloqueado" onclick="alert('Próximamente disponible')">
+                    🧠 Minijuego 3 <span class="badge">PROX</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ÁREA DE JUEGO -->
+        <div id="areaJuego">
+            <button class="btn-volver" onclick="volverMenu()">⬅ Menú</button>
+            <div class="puntuacion">
+                🏆 <span id="puntajeTexto">0</span>
+            </div>
+            <canvas id="canvasJuego"></canvas>
+            <div id="gameOver">
+                <h2>💀 Game Over</h2>
+                <div class="puntaje-final">
+                    Puntaje: <span id="puntajeFinal">0</span>
+                </div>
+                <button class="btn-reiniciar" onclick="reiniciarJuego()">🔄 Reintentar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================================
+        // 🖼️ CONFIGURACIÓN DEL PERSONAJE (TÚ)
+        // ================================================================
+        const URL_PERSONAJE = 'https://raw.githubusercontent.com/maikermedina1999-bot/Proyecto/main/ChatGPT%20Image%202%20ago%202026%2C%2001_58_17%20p.m..png';
+
+        // ================================================================
+        // 👥 PERSONAJES OBSTÁCULO (LIZ Y BARBY - FONDO TRANSPARENTE)
+        // ================================================================
+        const URL_OBSTACULOS = [
+            {
+                nombre: 'Liz',
+                url: 'https://raw.githubusercontent.com/maikermedina1999-bot/Proyecto/main/liz1.png',
+                ancho: 140,
+                alto: 140
+            },
+            {
+                nombre: 'Barby',
+                url: 'https://raw.githubusercontent.com/maikermedina1999-bot/Proyecto/main/barby1.png',
+                ancho: 140,
+                alto: 140
+            },
+        ];
+
+        // ================================================================
+        // 🔧 ELEMENTOS DEL DOM
+        // ================================================================
+        const menu = document.getElementById('menuPrincipal');
+        const areaJuego = document.getElementById('areaJuego');
+        const canvas = document.getElementById('canvasJuego');
+        const ctx = canvas.getContext('2d');
+        const puntajeTexto = document.getElementById('puntajeTexto');
+        const puntajeFinal = document.getElementById('puntajeFinal');
+        const gameOverDiv = document.getElementById('gameOver');
+
+        // ================================================================
+        // 📐 DIMENSIONES DEL CANVAS
+        // ================================================================
+        function redimensionarCanvas() {
+            const rect = areaJuego.getBoundingClientRect();
+            canvas.width = rect.width || 800;
+            canvas.height = rect.height || 500;
+            console.log('📐 Canvas:', canvas.width, 'x', canvas.height);
+        }
+
+        // ================================================================
+        // 🏃 JUGADOR (TÚ) - HITBOX AJUSTADA
+        // ================================================================
+        let jugador = null;
+        let obstaculos = [];
+        let nubes = [];
+        let frameId = null;
+        let contadorPuntaje = 0;
+        let ultimoTiempo = 0;
+        let juegoActivo = false;
+        let gameOver = false;
+        let puntaje = 0;
+        let indiceObstaculoActual = 0;
+
+        class Jugador {
+            constructor() {
+                this.ancho = 180;
+                this.alto = 180;
+                this.x = -50;
+                this.y = canvas.height -50 - this.alto -80;
+                this.velY = 0;
+                this.gravedad = 0.5;
+                this.fuerzaSalto = -20;
+                this.enSuelo = true;
+                this.imagen = new Image();
+                this.imagen.src = URL_PERSONAJE;
+                this.imagenCargada = false;
+                this.imagen.onload = () => {
+                    this.imagenCargada = true;
+                    console.log('✅ Imagen del personaje cargada correctamente');
+                };
+                this.imagen.onerror = () => {
+                    this.imagenCargada = false;
+                    console.warn('⚠️ No se pudo cargar la imagen. Usando círculo de respaldo.');
+                };
+            }
+
+            saltar() {
+                if (this.enSuelo) {
+                    this.velY = this.fuerzaSalto;
+                    this.enSuelo = false;
+                }
+            }
+
+            actualizar() {
+                this.velY += this.gravedad;
+                this.y += this.velY;
+             const suelo = canvas.height -40 - this.alto +25 ;
+                if (this.y >= suelo) {
+                    this.y = suelo;
+                    this.velY = 0;
+                    this.enSuelo = true;
+                }
+            }
+
+            dibujar() {
+                if (this.imagenCargada) {
+                    ctx.drawImage(this.imagen, this.x, this.y, this.ancho, this.alto);
+                } else {
+                    ctx.shadowColor = '#00d4ff';
+                    ctx.shadowBlur = 20;
+                    const grad = ctx.createRadialGradient(
+                        this.x + this.ancho / 2, this.y + this.alto / 2, 20,
+                        this.x + this.ancho / 2, this.y + this.alto / 2, this.ancho / 2
+                    );
+                    grad.addColorStop(0, '#4af0ff');
+                    grad.addColorStop(0.7, '#0088cc');
+                    grad.addColorStop(1, '#004466');
+                    ctx.beginPath();
+                    ctx.ellipse(this.x + this.ancho / 2, this.y + this.alto / 2,
+                        this.ancho / 2, this.alto / 2, 0, 0, Math.PI * 2);
+                    ctx.fillStyle = grad;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath();
+                    ctx.arc(this.x + 50, this.y + 60, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(this.x + 130, this.y + 60, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#0a0a1a';
+                    ctx.beginPath();
+                    ctx.arc(this.x + 55, this.y + 65, 10, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(this.x + 135, this.y + 65, 10, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // 🔹 HITBOX AJUSTADA (más pequeña para colisión justa)
+            getRect() {
+                const margen = 35;
+                return {
+                    x: this.x + margen,
+                    y: this.y + margen + 10,
+                    ancho: this.ancho - margen * 2,
+                    alto: this.alto - margen * 2 - 10
+                };
+            }
+        }
+
+        // ================================================================
+        // 🏃 OBSTÁCULO (PERSONAS CORRIENDO) - HITBOX AJUSTADA
+        // ================================================================
+        class Obstaculo {
+            constructor() {
+                const datosPersonaje = URL_OBSTACULOS[indiceObstaculoActual];
+                indiceObstaculoActual = (indiceObstaculoActual + 1) % URL_OBSTACULOS.length;
+
+                this.ancho = datosPersonaje.ancho || 60;
+                this.alto = datosPersonaje.alto || 80;
+                this.x = canvas.width + 20;
+                this.y = canvas.height -50 - this.alto +25 ;
+                this.velocidad = 3.5 + Math.random() * 1.5;
+                this.nombre = datosPersonaje.nombre;
+                this.imagen = new Image();
+                this.imagen.src = datosPersonaje.url;
+                this.imagenCargada = false;
+                this.imagen.onload = () => {
+                    this.imagenCargada = true;
+                };
+                this.imagen.onerror = () => {
+                    this.imagenCargada = false;
+                    console.warn(`⚠️ No se pudo cargar la imagen de ${this.nombre}`);
+                };
+            }
+
+            actualizar() {
+                this.x -= this.velocidad;
+            }
+
+            dibujar() {
+                if (this.imagenCargada) {
+                    ctx.drawImage(this.imagen, this.x, this.y, this.ancho, this.alto);
+                } else {
+                    ctx.shadowColor = 'rgba(0,0,0,0.3)';
+                    ctx.shadowBlur = 10;
+                    ctx.fillStyle = '#ff6b6b';
+                    ctx.beginPath();
+                    ctx.arc(this.x + this.ancho / 2, this.y + this.alto / 2,
+                        this.ancho / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                    ctx.fillStyle = '#fff';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(this.nombre, this.x + this.ancho / 2, this.y + this.alto + 16);
+                }
+
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                ctx.beginPath();
+                ctx.ellipse(
+                    this.x + this.ancho / 2,
+                    canvas.height - 80 + 6,
+                    this.ancho / 2 + 4,
+                    6, 0, 0, Math.PI * 2
+                );
+                ctx.fill();
+            }
+
+            // 🔹 HITBOX AJUSTADA (más pequeña para colisión justa)
+            getRect() {
+                const margen = 15;
+                return {
+                    x: this.x + margen,
+                    y: this.y + margen + 5,
+                    ancho: this.ancho - margen * 2,
+                    alto: this.alto - margen * 2 - 5
+                };
+            }
+
+            fueraDePantalla() {
+                return this.x + this.ancho < -20;
+            }
+        }
+// ================================================================
+        // ⏱️ INTERVALO DE OBSTÁCULOS (CADA 3 SEGUNDOS EXACTOS)
+        // ================================================================
+        function iniciarIntervaloObstaculos() {
+            // Limpiar intervalo anterior
+            if (window.intervaloObstaculosGlobal) {
+                clearInterval(window.intervaloObstaculosGlobal);
+                window.intervaloObstaculosGlobal = null;
+            }
+
+            // Crear nuevo intervalo (cada 3 segundos)
+            window.intervaloObstaculosGlobal = setInterval(() => {
+                if (juegoActivo && !gameOver && jugador) {
+                    obstaculos.push(new Obstaculo());
+                }
+            }, 3000); // Exactamente 3 segundos
+        }
+
+        // ================================================================
+        // 🚀 INICIAR JUEGO
+        // ================================================================
+        function iniciarJuego() {
+            console.log('🎮 Iniciando juego...');
+
+            menu.style.display = 'none';
+            areaJuego.style.display = 'block';
+            areaJuego.classList.add('activo');
+
+            setTimeout(() => {
+                redimensionarCanvas();
+            }, 50);
+
+            juegoActivo = true;
+            gameOver = false;
+            puntaje = 0;
+            contadorPuntaje = 0;
+            obstaculos = [];
+            nubes = [];
+            indiceObstaculoActual = 0;
+            gameOverDiv.classList.remove('visible');
+
+            jugador = new Jugador();
+
+            if (frameId) cancelAnimationFrame(frameId);
+            ultimoTiempo = performance.now();
+            bucleJuego(ultimoTiempo);
+
+            // Iniciar intervalo de obstáculos
+            iniciarIntervaloObstaculos();
+
+            actualizarPuntaje();
+            console.log('✅ Juego iniciado correctamente');
+        }
+
+        // ================================================================
+        // 🔄 BUCLE PRINCIPAL
+        // ================================================================
+        function bucleJuego(timestamp) {
+            if (!juegoActivo) {
+                frameId = requestAnimationFrame(bucleJuego);
+                return;
+            }
+
+            const delta = timestamp - ultimoTiempo;
+            ultimoTiempo = timestamp;
+
+            contadorPuntaje += delta;
+            if (contadorPuntaje >= 100) {
+                puntaje += Math.floor(contadorPuntaje / 100);
+                contadorPuntaje = contadorPuntaje % 100;
+                actualizarPuntaje();
+            }
+
+            actualizarJuego();
+            dibujarEscena();
+
+            frameId = requestAnimationFrame(bucleJuego);
+        }
+
+        // ================================================================
+        // 🔄 ACTUALIZAR LÓGICA
+        // ================================================================
+        function actualizarJuego() {
+            if (!jugador || gameOver) return;
+
+            jugador.actualizar();
+
+            for (let i = obstaculos.length - 1; i >= 0; i--) {
+                const obs = obstaculos[i];
+                obs.actualizar();
+
+                if (obs.fueraDePantalla()) {
+                    obstaculos.splice(i, 1);
+                    continue;
+                }
+
+                if (detectarColision(jugador, obs)) {
+                    gameOverFunc();
+                    return;
+                }
+            }
+        }
+
+        // ================================================================
+        // 🎨 DIBUJAR ESCENA
+        // ================================================================
+        function dibujarEscena() {
+            const w = canvas.width;
+            const h = canvas.height;
+
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+            skyGrad.addColorStop(0, '#4a90d9');
+            skyGrad.addColorStop(0.6, '#87CEEB');
+            skyGrad.addColorStop(1, '#b5dffa');
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, w, h);
+
+            dibujarNubes();
+
+            const sueloY = h - 80;
+            ctx.fillStyle = '#3a3a4a';
+            ctx.fillRect(0, sueloY, w, 80);
+
+            ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([20, 30]);
+            ctx.beginPath();
+            ctx.moveTo(0, sueloY + 40);
+            ctx.lineTo(w, sueloY + 40);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            for (const obs of obstaculos) {
+                obs.dibujar();
+            }
+
+            if (jugador) {
+                jugador.dibujar();
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = 'rgba(0,0,0,0.1)';
+                ctx.beginPath();
+                ctx.ellipse(
+                    jugador.x + jugador.ancho / 2,
+                    canvas.height - 80 + 6,
+                    jugador.ancho / 2 + 4,
+                    6, 0, 0, Math.PI * 2
+                );
+                ctx.fill();
+            }
+        }
+
+        // ================================================================
+        // ☁️ NUBES
+        // ================================================================
+        function dibujarNubes() {
+            const w = canvas.width;
+            if (nubes.length === 0) {
+                for (let i = 0; i < 5; i++) {
+                    nubes.push({
+                        x: Math.random() * w,
+                        y: 30 + Math.random() * 100,
+                        ancho: 80 + Math.random() * 120,
+                        velocidad: 0.15 + Math.random() * 0.15,
+                        opacidad: 0.3 + Math.random() * 0.3
+                    });
+                }
+            }
+
+            ctx.shadowBlur = 0;
+            for (const nube of nubes) {
+                nube.x += nube.velocidad;
+                if (nube.x > w + nube.ancho) {
+                    nube.x = -nube.ancho;
+                    nube.y = 30 + Math.random() * 100;
+                    nube.ancho = 80 + Math.random() * 120;
+                }
+                ctx.globalAlpha = nube.opacidad;
+                ctx.fillStyle = '#ffffff';
+                const a = nube.ancho;
+                const y = nube.y;
+                ctx.beginPath();
+                ctx.ellipse(nube.x, y, a * 0.35, 20, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(nube.x - a * 0.25, y + 6, a * 0.25, 16, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(nube.x + a * 0.25, y + 6, a * 0.25, 16, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(nube.x - a * 0.12, y - 4, a * 0.2, 14, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(nube.x + a * 0.12, y - 4, a * 0.2, 14, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        // ================================================================
+        // 💥 COLISIÓN (CON HITBOXES AJUSTADAS)
+        // ================================================================
+        function detectarColision(jugador, obstaculo) {
+            const r1 = jugador.getRect();
+            const r2 = obstaculo.getRect();
+            return r1.x < r2.x + r2.ancho &&
+                r1.x + r1.ancho > r2.x &&
+                r1.y < r2.y + r2.alto &&
+                r1.y + r1.alto > r2.y;
+        }
+
+        // ================================================================
+        // 💀 GAME OVER
+        // ================================================================
+        function gameOverFunc() {
+            if (gameOver) return;
+            gameOver = true;
+            juegoActivo = false;
+
+            if (window.intervaloObstaculosGlobal) {
+                clearInterval(window.intervaloObstaculosGlobal);
+                window.intervaloObstaculosGlobal = null;
+            }
+
+            puntajeFinal.textContent = puntaje;
+            gameOverDiv.classList.add('visible');
+            console.log('💀 Game Over - Puntaje:', puntaje);
+        }
+
+        // ================================================================
+        // 🔄 REINICIAR
+        // ================================================================
+        function reiniciarJuego() {
+            console.log('🔄 Reiniciando...');
+            gameOver = false;
+            juegoActivo = true;
+            puntaje = 0;
+            contadorPuntaje = 0;
+            obstaculos = [];
+            indiceObstaculoActual = 0;
+            gameOverDiv.classList.remove('visible');
+
+            jugador = new Jugador();
+
+            if (window.intervaloObstaculosGlobal) {
+                clearInterval(window.intervaloObstaculosGlobal);
+                window.intervaloObstaculosGlobal = null;
+            }
+            window.intervaloObstaculosGlobal = setInterval(() => {
+                if (juegoActivo && !gameOver && jugador) {
+                    obstaculos.push(new Obstaculo());
+                }
+            }, 3000);
+
+            actualizarPuntaje();
+        }
+
+        // ================================================================
+        // 📊 PUNTAJE
+        // ================================================================
+        function actualizarPuntaje() {
+            puntajeTexto.textContent = puntaje;
+        }
+
+        // ================================================================
+        // ⬅️ VOLVER AL MENÚ
+        // ================================================================
+        function volverMenu() {
+            console.log('⬅️ Volviendo al menú');
+            juegoActivo = false;
+            gameOver = false;
+
+            if (window.intervaloObstaculosGlobal) {
+                clearInterval(window.intervaloObstaculosGlobal);
+                window.intervaloObstaculosGlobal = null;
+            }
+
+            if (frameId) {
+                cancelAnimationFrame(frameId);
+                frameId = null;
+            }
+
+            areaJuego.classList.remove('activo');
+            areaJuego.style.display = 'none';
+            gameOverDiv.classList.remove('visible');
+            menu.style.display = 'flex';
+
+            obstaculos = [];
+            jugador = null;
+            nubes = [];
+        }
+
+        // ================================================================
+        // ⌨️ CONTROLES
+        // ================================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.key === 'Space' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (jugador && juegoActivo && !gameOver) {
+                    jugador.saltar();
+                }
+            }
+        });
+
+        canvas.addEventListener('click', function() {
+            if (jugador && juegoActivo && !gameOver) {
+                jugador.saltar();
+            }
+        });
+
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            if (jugador && juegoActivo && !gameOver) {
+                jugador.saltar();
+            }
+        }, { passive: false });
+
+        // ================================================================
+        // 🎯 EVENTO DEL BOTÓN
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const btnJuego1 = document.getElementById('btnJuego1');
+            if (btnJuego1) {
+                btnJuego1.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    console.log('🖱️ Click en "Esquiva en la Calle"');
+                    iniciarJuego();
+                });
+            } else {
+                console.error('❌ Botón #btnJuego1 no encontrado');
+            }
+        });
+
+        // ================================================================
+        // 📱 REDIMENSIONAR
+        // ================================================================
+        window.addEventListener('resize', function() {
+            if (areaJuego.classList.contains('activo')) {
+                redimensionarCanvas();
+            }
+        });
+
+        // ================================================================
+        // 🚀 INICIALIZACIÓN
+        // ================================================================
+        console.log('🎮 Arcade - Esquiva en la Calle');
+        console.log('🖼️ URL del personaje:', URL_PERSONAJE);
+        console.log('👥 Personajes obstáculo: Liz y Barby (fondo transparente)');
+        console.log('⏱️ Obstáculos cada 3 segundos exactos');
+        console.log('🎯 Hitboxes ajustadas para colisión justa');
+        console.log('🎯 Presiona Espacio, Flecha Arriba o toca la pantalla para saltar');
+    </script>
+
+</body>
+</html>
